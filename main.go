@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
+	"io"
+	"net/http"
 )
 
 func main() {
-	fmt.Println("vim-go")
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run()
+	http.HandleFunc("/", TaxCal)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("服务启动失败")
+	}
+}
+
+func TaxCal(rsp http.ResponseWriter, req *http.Request) {
+	io.WriteString(rsp, "欢迎使用个税计算器")
 }
